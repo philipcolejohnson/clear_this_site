@@ -10,8 +10,8 @@ const deletionOptions = [
 ];
 
 function reloadCurrentTab() {
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.update(tabs[0].id, { url: tabs[0].url });
   });
 }
 
@@ -43,7 +43,7 @@ function getDomain(url) {
   return match && match[0];
 }
 
-const callback = (reload) => {
+const finish = (reload) => {
   setRestingIcon();
 
   if (reload) {
@@ -66,18 +66,11 @@ function removeAllData(site) {
       pluginData: results.pluginData,
       serviceWorkers: results.serviceWorkers,
       webSQL: results.webSQL
-    }, () => callback(results.reload));
+    }, () => finish(results.reload));
   });
 }
 
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if(request.message === "clear_data" ) {
-      removeAllData(request.url);
-    }
-  }
-);
-
+// Initialize settings on install
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
     reload: true,
@@ -92,14 +85,14 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+// toolbar button clicked
 chrome.browserAction.onClicked.addListener((tab) => {
   setBusyIcon();
 
   // just in case
   setTimeout(() => setRestingIcon(), 2000);
 
-  // Send a message to the active tab
-  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     var activeTab = tabs[0];
     
     const domain = getDomain(activeTab.url);
