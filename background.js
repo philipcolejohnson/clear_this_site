@@ -44,8 +44,6 @@ function getDomain(url) {
 }
 
 const finish = (reload) => {
-  setRestingIcon();
-
   if (reload) {
     reloadCurrentTab();
   }
@@ -88,9 +86,7 @@ chrome.runtime.onInstalled.addListener(() => {
 // toolbar button clicked
 chrome.browserAction.onClicked.addListener((tab) => {
   setBusyIcon();
-
-  // just in case
-  setTimeout(() => setRestingIcon(), 2000);
+  setTimeout(() => setRestingIcon(), 1000);
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     var activeTab = tabs[0];
