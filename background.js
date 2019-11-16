@@ -4,8 +4,32 @@ function reloadCurrentTab() {
   });
 }
 
+function setRestingIcon() {
+  chrome.browserAction.setIcon({
+    path: {
+      "16": "images/trash-16.png",
+      "32": "images/trash-32.png",
+      "48": "images/trash-48.png",
+      "128": "images/trash-128.png"
+    }
+  });
+}
+
+function setBusyIcon() {
+  chrome.browserAction.setIcon({
+    path: {
+      "16": "images/browser-16.png",
+      "32": "images/browser-32.png",
+      "48": "images/browser-48.png",
+      "128": "images/browser-128.png"
+    }
+  });
+}
+
 const callback = () => {
   console.log('cleared!')
+  setRestingIcon();
+
   reloadCurrentTab()
 }
 
@@ -41,6 +65,11 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.browserAction.onClicked.addListener(function(tab) {
   console.log('toolbar')
+  setBusyIcon();
+
+  // just in case
+  setTimeout(() => setRestingIcon(), 2000);
+
   // Send a message to the active tab
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     console.log('tabs query')
