@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    .flex {
+      display: flex;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .mt-2 {
+      margin-top: 2rem;
+    }
+
+    .small {
+      font-size: 0.6rem;
+    }
+
+    .container {
+      color: #303942;
+      margin-left: 1rem;
+    }
+
+    .logo {
+      height: 2rem;
+      margin-right: 0.5rem;
+    }
+
+    .option,
+    .heading {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="option-list" class="container">
+    <div class="flex items-center">
+      <img class="logo" src="/images/trash-128.png">
+      <h1>Clear This Site! options</h1>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="reload" name="reload" value="reload">
+      <label for="reload">Reload after clearing</label>
+    </div>
+
+    <h2 class="mt-2">Site data to clear</h2>
+
+    <p class="heading"><strong>Application</strong></p>
+
+    <div class="option">
+      <input type="checkbox" id="serviceWorkers" name="serviceWorkers" value="serviceWorkers">
+      <label for="serviceWorkers">Unregister service workers</label>
+    </div>
+
+    <p class="heading"><strong>Storage</strong></p>
+
+    <div class="option">
+      <input type="checkbox" id="localStorage" name="localStorage" value="localStorage">
+      <label for="localStorage">Local and session storage</label>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="indexedDB" name="indexedDB" value="indexedDB">
+      <label for="indexedDB">IndexedDB</label>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="webSQL" name="webSQL" value="webSQL">
+      <label for="webSQL">Web SQL</label>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="cookies" name="cookies" value="cookies">
+      <label for="cookies">Cookies</label>
+    </div>
+
+    <p class="heading"><strong>Cache</strong></p>
+
+    <div class="option">
+      <input type="checkbox" id="cacheStorage" name="cacheStorage" value="cacheStorage">
+      <label for="cacheStorage">Cache storage</label>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="appcache" name="appcache" value="appcache">
+      <label for="appcache">Application cache</label>
+    </div>
+
+    <p class="heading"><strong>Plugins</strong></p>
+
+    <div class="option">
+      <input type="checkbox" id="pluginData" name="pluginData" value="pluginData">
+      <label for="pluginData">Plugin data</label>
+    </div>
+
+    <footer class="mt-2">
+        <p class="small">Clear This Site! v1.0.0 (c) 2019 <a href="https://github.com/philipcolejohnson">Philip Johnson</a></p>
+    </footer>
+  </div>
+</body>
+<script src="options.js"></script>
+
+</html>

@@ -1,3 +1,14 @@
+const deletionOptions = [
+  'appcache',
+  'cacheStorage',
+  'cookies',
+  'indexedDB',
+  'localStorage',
+  'pluginData',
+  'serviceWorkers',
+  'webSQL'
+];
+
 function reloadCurrentTab() {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
@@ -26,27 +37,34 @@ function setBusyIcon() {
   });
 }
 
-const callback = () => {
-  console.log('cleared!')
+const callback = (reload) => {
+  console.log('cleared! reload?', reload)
   setRestingIcon();
 
-  reloadCurrentTab()
+  if (reload) {
+    reloadCurrentTab();
+  }
 }
 
 function removeAllData(site) {
   console.log('removing!')
-  chrome.browsingData.remove({
-    "origins": [site]
-  }, {
-    "cacheStorage": true,
-    "cookies": true,
-    "fileSystems": true,
-    "indexedDB": true,
-    "localStorage": true,
-    "pluginData": true,
-    "serviceWorkers": true,
-    "webSQL": true
-  }, callback);
+  const optionIds = ['reload', ...deletionOptions];
+  chrome.storage.sync.get(optionIds, results => {
+    console.log('results', results)
+
+    chrome.browsingData.remove({
+      origins: [site]
+    }, {
+      appcache: results.appcache,
+      cacheStorage: results.cacheStorage,
+      cookies: results.cookies,
+      indexedDB: results.indexedDB,
+      localStorage: results.localStorage,
+      pluginData: results.pluginData,
+      serviceWorkers: results.serviceWorkers,
+      webSQL: results.webSQL
+    }, () => callback(results.reload));
+  });
 }
 
 chrome.runtime.onMessage.addListener(
@@ -57,13 +75,21 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
-chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({color: '#3aa757'}, function() {
-    console.log("The color is green.");
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.set({
+    reload: true,
+    appcache: true,
+    cacheStorage: true,
+    cookies: true,
+    indexedDB: true,
+    localStorage: true,
+    pluginData: true,
+    serviceWorkers: true,
+    webSQL: true
   });
 });
 
-chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.browserAction.onClicked.addListener((tab) => {
   console.log('toolbar')
   setBusyIcon();
 
@@ -71,10 +97,9 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   setTimeout(() => setRestingIcon(), 2000);
 
   // Send a message to the active tab
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
     console.log('tabs query')
     var activeTab = tabs[0];
-    console.log(activeTab.url)
     
     chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
     // removeAllData(activeTab.url);
