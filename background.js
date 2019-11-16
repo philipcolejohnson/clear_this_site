@@ -37,6 +37,12 @@ function setBusyIcon() {
   });
 }
 
+function getDomain(url) {
+  const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n\?\=]+)/im);
+  
+  return match && match[0];
+}
+
 const callback = (reload) => {
   setRestingIcon();
 
@@ -96,7 +102,7 @@ chrome.browserAction.onClicked.addListener((tab) => {
   chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
     var activeTab = tabs[0];
     
-    // chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
-    removeAllData(activeTab.url);
+    const domain = getDomain(activeTab.url);
+    removeAllData(domain);
   });
 });
