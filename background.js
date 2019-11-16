@@ -38,7 +38,6 @@ function setBusyIcon() {
 }
 
 const callback = (reload) => {
-  console.log('cleared! reload?', reload)
   setRestingIcon();
 
   if (reload) {
@@ -47,11 +46,9 @@ const callback = (reload) => {
 }
 
 function removeAllData(site) {
-  console.log('removing!')
   const optionIds = ['reload', ...deletionOptions];
-  chrome.storage.sync.get(optionIds, results => {
-    console.log('results', results)
 
+  chrome.storage.sync.get(optionIds, results => {
     chrome.browsingData.remove({
       origins: [site]
     }, {
@@ -90,7 +87,6 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.browserAction.onClicked.addListener((tab) => {
-  console.log('toolbar')
   setBusyIcon();
 
   // just in case
@@ -98,10 +94,9 @@ chrome.browserAction.onClicked.addListener((tab) => {
 
   // Send a message to the active tab
   chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-    console.log('tabs query')
     var activeTab = tabs[0];
     
-    chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
-    // removeAllData(activeTab.url);
+    // chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
+    removeAllData(activeTab.url);
   });
 });
