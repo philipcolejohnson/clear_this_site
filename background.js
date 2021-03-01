@@ -16,7 +16,7 @@ function reloadCurrentTab() {
 }
 
 function setRestingIcon() {
-  chrome.browserAction.setIcon({
+  chrome.action.setIcon({
     path: {
       "16": "images/trash-16.png",
       "32": "images/trash-32.png",
@@ -27,7 +27,7 @@ function setRestingIcon() {
 }
 
 function setBusyIcon() {
-  chrome.browserAction.setIcon({
+  chrome.action.setIcon({
     path: {
       "16": "images/browser-16.png",
       "32": "images/browser-32.png",
@@ -84,7 +84,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 // toolbar button clicked
-chrome.browserAction.onClicked.addListener((tab) => {
+chrome.action.onClicked.addListener((tab) => {
   setBusyIcon();
   setTimeout(() => setRestingIcon(), 1000);
 

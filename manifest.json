@@ -1,21 +1,18 @@
 {
   "name": "Clear This Site!",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Philip Cole Johnson",
-  "description": "Clear This Site! deletes all data only from the current site.",
+  "description": "Clear This Site! deletes all data from the current site only.",
   "permissions": [
     "activeTab",
     "browsingData",
     "storage"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ],
-    "persistent": false
+    "service_worker": "background.js"
   },
   "options_page": "options.html",
-  "browser_action": {
+  "action": {
     "default_title": "Clear This Site!",
     "default_icon": {
       "16": "images/trash-16.png",
@@ -30,5 +27,5 @@
     "48": "images/trash-48.png",
     "128": "images/trash-128.png"
   },
-  "manifest_version": 2
+  "manifest_version": 3
 }
