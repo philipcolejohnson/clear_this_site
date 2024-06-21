@@ -18,10 +18,10 @@ function reloadCurrentTab() {
 function setRestingIcon() {
   chrome.action.setIcon({
     path: {
-      "16": "images/trash-16.png",
-      "32": "images/trash-32.png",
-      "48": "images/trash-48.png",
-      "128": "images/trash-128.png"
+      "16": "images/inactive-16.png",
+      "32": "images/inactive-32.png",
+      "48": "images/inactive-48.png",
+      "128": "images/inactive-128.png"
     }
   });
 }
@@ -29,17 +29,17 @@ function setRestingIcon() {
 function setBusyIcon() {
   chrome.action.setIcon({
     path: {
-      "16": "images/browser-16.png",
-      "32": "images/browser-32.png",
-      "48": "images/browser-48.png",
-      "128": "images/browser-128.png"
+      "16": "images/active-16.png",
+      "32": "images/active-32.png",
+      "48": "images/active-48.png",
+      "128": "images/active-128.png"
     }
   });
 }
 
 function getDomain(url) {
   const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n\?\=]+)/im);
-  
+
   return match && match[0];
 }
 
@@ -90,7 +90,7 @@ chrome.action.onClicked.addListener((tab) => {
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     var activeTab = tabs[0];
-    
+
     const domain = getDomain(activeTab.url);
     removeAllData(domain);
   });
