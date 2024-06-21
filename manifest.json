@@ -1,6 +1,7 @@
 {
+  "manifest_version": 3,
   "name": "Clear This Site!",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "Philip Cole Johnson",
   "description": "Clear This Site! deletes all data from the current site only.",
   "permissions": [
@@ -26,6 +27,5 @@
     "32": "images/inactive-32.png",
     "48": "images/inactive-48.png",
     "128": "images/inactive-128.png"
-  },
-  "manifest_version": 3
+  }
 }
