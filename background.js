@@ -1,5 +1,11 @@
+const POST_ACTION = Object.freeze({
+  DO_NOTHING: 'do-nothing',
+  RELOAD_TAB: 'reload-tab',
+  CLOSE_TAB: 'close-tab',
+});
+
 const metaOptions = [
-  'reload',
+  'postAction',
 ];
 const deletionOptions = [
   'appcache',
@@ -78,7 +84,7 @@ async function removeSelectedData(origin) {
 // Initialize settings on initial extension installation
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
-    reload: true,
+    postAction: POST_ACTION.RELOAD_TAB,
     appcache: true,
     cacheStorage: true,
     cookies: true,
