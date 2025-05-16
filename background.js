@@ -19,7 +19,7 @@ async function getCurrentTab() {
 
 async function reloadCurrentTab() {
   const activeTab = await getCurrentTab();
-  await chrome.tabs.update(activeTab.id, { url: activeTab.url });
+  await chrome.tabs.reload(activeTab.id);
 }
 
 function setRestingIcon() {
