@@ -1,3 +1,6 @@
+const metaOptions = [
+  'reload',
+];
 const deletionOptions = [
   'appcache',
   'cacheStorage',
@@ -41,10 +44,9 @@ function setBusyIcon() {
   });
 }
 
-function getDomain(url) {
-  const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n\?\=]+)/im);
-
-  return match && match[0];
+function getOrigin(url) {
+  const parsedUrl = new URL(url);
+  return `${parsedUrl.protocol}//${parsedUrl.hostname}`;
 }
 
 async function finish(reload) {
@@ -53,12 +55,12 @@ async function finish(reload) {
   }
 }
 
-async function removeSelectedData(site) {
-  const optionIds = ['reload', ...deletionOptions];
-
+async function removeSelectedData(origin) {
+  const optionIds = [...metaOptions, ...deletionOptions];
   const options = await chrome.storage.sync.get(optionIds);
+
   await chrome.browsingData.remove({
-    origins: [site]
+    origins: [origin]
   }, {
     appcache: options.appcache,
     cacheStorage: options.cacheStorage,
@@ -94,6 +96,6 @@ chrome.action.onClicked.addListener(async () => {
   setTimeout(() => setRestingIcon(), 1000);
 
   const activeTab = await getCurrentTab();
-  const domain = await getDomain(activeTab.url);
-  await removeSelectedData(domain);
+  const origin = await getOrigin(activeTab.url);
+  await removeSelectedData(origin);
 });
