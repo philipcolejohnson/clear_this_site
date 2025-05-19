@@ -85,9 +85,9 @@ async function removeSelectedData(origin) {
   await finish(options.reload);
 }
 
-// Initialize settings when extension is installed, updated, or Chrome is updated
-// use cached values if available, otherwise use defaults
-chrome.runtime.onInstalled.addListener(async () => {
+// since we read the options from storage when clearing a site, this
+// makes sure they are all present in storage
+async function syncOptions() {
   const options = await getAllStoredOptions();
 
   chrome.storage.sync.set({
@@ -101,6 +101,17 @@ chrome.runtime.onInstalled.addListener(async () => {
     serviceWorkers: options.serviceWorkers ?? true,
     webSQL: options.webSQL ?? true
   });
+}
+
+// Initialize settings when extension is installed, updated, or Chrome is updated
+// use cached values if available, otherwise use defaults
+chrome.runtime.onInstalled.addListener(() => {
+  syncOptions();
+});
+
+// Fired when a profile that has this extension installed first starts up
+chrome.runtime.onStartup.addListener(() => {
+  syncOptions();
 });
 
 // toolbar button clicked
