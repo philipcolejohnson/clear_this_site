@@ -11,9 +11,9 @@ const deletionOptions = [
   'appcache',
   'cacheStorage',
   'cookies',
+  'fileSystems',
   'indexedDB',
   'localStorage',
-  'pluginData',
   'serviceWorkers',
   'webSQL'
 ];
@@ -82,9 +82,10 @@ async function removeSelectedData(origin) {
     appcache: options.appcache,
     cacheStorage: options.cacheStorage,
     cookies: options.cookies,
+    fileSystems: options.fileSystems,
     indexedDB: options.indexedDB,
     localStorage: options.localStorage,
-    pluginData: options.pluginData,
+    pluginData: true, // this is deprecated and probably can be removed
     serviceWorkers: options.serviceWorkers,
     webSQL: options.webSQL
   })
@@ -106,9 +107,9 @@ async function syncOptions() {
     appcache: options.appcache ?? true,
     cacheStorage: options.cacheStorage ?? true,
     cookies: options.cookies ?? true,
+    fileSystems: options.fileSystems ?? true,
     indexedDB: options.indexedDB ?? true,
     localStorage: options.localStorage ?? true,
-    pluginData: options.pluginData ?? true,
     serviceWorkers: options.serviceWorkers ?? true,
     webSQL: options.webSQL ?? true,
   });
