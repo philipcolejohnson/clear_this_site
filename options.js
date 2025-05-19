@@ -20,18 +20,23 @@
   list.addEventListener('click', (e) => {
     if (e.target.tagName.toLowerCase() === 'input') {
       const formData = new FormData(list);
-      const optionName = e.target.name;
-      const value = formData.get(optionName);
-      const setting = {};
-      switch (e.target.type) {
-        case 'checkbox':
-          setting[optionName] = value === 'on';
-          break;
-        case 'radio':
-          setting[optionName] = value;
-          break;
-      }
-      chrome.storage.sync.set(setting);
+      const optionElements = Array.from(document.querySelectorAll('input'));
+      const settings = {};
+
+      optionElements.forEach(optionElement => {
+        const optionName = optionElement.name;
+        const value = formData.get(optionName);
+        switch (optionElement.type) {
+          case 'checkbox':
+            settings[optionName] = value === 'on';
+            break;
+          case 'radio':
+            settings[optionName] = value;
+            break;
+        }
+      });
+
+      chrome.storage.sync.set(settings);
     }
   });
 })();
