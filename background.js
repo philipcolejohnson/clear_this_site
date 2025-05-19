@@ -61,9 +61,13 @@ async function finish(reload) {
   }
 }
 
-async function removeSelectedData(origin) {
+async function getAllStoredOptions() {
   const optionIds = [...metaOptions, ...deletionOptions];
-  const options = await chrome.storage.sync.get(optionIds);
+  return chrome.storage.sync.get(optionIds);
+}
+
+async function removeSelectedData(origin) {
+  const options = await getAllStoredOptions();
 
   await chrome.browsingData.remove({
     origins: [origin]
@@ -81,18 +85,21 @@ async function removeSelectedData(origin) {
   await finish(options.reload);
 }
 
-// Initialize settings on initial extension installation
-chrome.runtime.onInstalled.addListener(() => {
+// Initialize settings when extension is installed, updated, or Chrome is updated
+// use cached values if available, otherwise use defaults
+chrome.runtime.onInstalled.addListener(async () => {
+  const options = await getAllStoredOptions();
+
   chrome.storage.sync.set({
-    postAction: POST_ACTION.RELOAD_TAB,
-    appcache: true,
-    cacheStorage: true,
-    cookies: true,
-    indexedDB: true,
-    localStorage: true,
-    pluginData: true,
-    serviceWorkers: true,
-    webSQL: true
+    postAction: options.postAction ?? POST_ACTION.RELOAD_TAB,
+    appcache: options.appcache ?? true,
+    cacheStorage: options.cacheStorage ?? true,
+    cookies: options.cookies ?? true,
+    indexedDB: options.indexedDB ?? true,
+    localStorage: options.localStorage ?? true,
+    pluginData: options.pluginData ?? true,
+    serviceWorkers: options.serviceWorkers ?? true,
+    webSQL: options.webSQL ?? true
   });
 });
 
