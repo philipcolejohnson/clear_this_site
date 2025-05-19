@@ -28,6 +28,11 @@ async function reloadCurrentTab() {
   await chrome.tabs.reload(activeTab.id);
 }
 
+async function closeCurrentTab() {
+  const activeTab = await getCurrentTab();
+  await chrome.tabs.remove(activeTab.id);
+}
+
 function setRestingIcon() {
   chrome.action.setIcon({
     path: {
@@ -55,9 +60,11 @@ function getOrigin(url) {
   return `${parsedUrl.protocol}//${parsedUrl.hostname}`;
 }
 
-async function finish(reload) {
-  if (reload) {
+async function finish(postAction) {
+  if (postAction === POST_ACTION.RELOAD_TAB) {
     await reloadCurrentTab();
+  } else if (postAction === POST_ACTION.CLOSE_TAB) {
+    await closeCurrentTab();
   }
 }
 
@@ -82,7 +89,7 @@ async function removeSelectedData(origin) {
     webSQL: options.webSQL
   })
 
-  await finish(options.reload);
+  await finish(options.postAction);
 }
 
 // since we read the options from storage when clearing a site, this
