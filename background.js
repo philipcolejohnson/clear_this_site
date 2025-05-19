@@ -89,9 +89,13 @@ async function removeSelectedData(origin) {
 // makes sure they are all present in storage
 async function syncOptions() {
   const options = await getAllStoredOptions();
+  await chrome.storage.sync.clear(); // make sure we start with a clean slate
+
+  // Update option from previous version
+  const postActionSetting = options.postAction ?? (options.reload === false ? POST_ACTION.DO_NOTHING : POST_ACTION.RELOAD_TAB);
 
   chrome.storage.sync.set({
-    postAction: options.postAction ?? POST_ACTION.RELOAD_TAB,
+    postAction: postActionSetting,
     appcache: options.appcache ?? true,
     cacheStorage: options.cacheStorage ?? true,
     cookies: options.cookies ?? true,
@@ -99,7 +103,7 @@ async function syncOptions() {
     localStorage: options.localStorage ?? true,
     pluginData: options.pluginData ?? true,
     serviceWorkers: options.serviceWorkers ?? true,
-    webSQL: options.webSQL ?? true
+    webSQL: options.webSQL ?? true,
   });
 }
 
