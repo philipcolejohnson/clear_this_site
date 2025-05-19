@@ -4,7 +4,7 @@
   "version": "2.2.0",
   "author": "Philip Cole Johnson",
   "homepage_url": "https://github.com/philipcolejohnson/clear_this_site",
-  "description": "Clear This Site! deletes all data from the current site only.",
+  "description": "Make the current website forget you by deleting all data and cookies, without disrupting other browsing.",
   "permissions": [
     "tabs",
     "browsingData",

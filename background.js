@@ -63,8 +63,6 @@ function getOrigin(url) {
 async function finish(postAction) {
   if (postAction === POST_ACTION.RELOAD_TAB) {
     await reloadCurrentTab();
-  } else if (postAction === POST_ACTION.CLOSE_TAB) {
-    await closeCurrentTab();
   }
 }
 
@@ -75,6 +73,11 @@ async function getAllStoredOptions() {
 
 async function removeSelectedData(origin) {
   const options = await getAllStoredOptions();
+
+  // Do this first to prevent site from reacting to the deletion
+  if (options.postAction === POST_ACTION.CLOSE_TAB) {
+    await closeCurrentTab();
+  }
 
   await chrome.browsingData.remove({
     origins: [origin]
