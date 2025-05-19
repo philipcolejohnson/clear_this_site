@@ -3,9 +3,10 @@
   "name": "Clear This Site!",
   "version": "2.2.0",
   "author": "Philip Cole Johnson",
+  "homepage_url": "https://github.com/philipcolejohnson/clear_this_site",
   "description": "Clear This Site! deletes all data from the current site only.",
   "permissions": [
-    "activeTab",
+    "tabs",
     "browsingData",
     "storage"
   ],
