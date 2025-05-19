@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Clear This Site!",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "Philip Cole Johnson",
   "description": "Clear This Site! deletes all data from the current site only.",
   "permissions": [
