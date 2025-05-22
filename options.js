@@ -1,7 +1,7 @@
 (async function initOptions() {
   const optionElements = Array.from(document.querySelectorAll('input'));
   const names = optionElements.map(o => o.name);
-  const options = await chrome.storage.sync.get(names);
+  const options = await chrome.storage.local.get(names);
   optionElements.forEach(optionElement => {
     const optionName = optionElement.name;
     switch (optionElement.type) {
@@ -17,7 +17,7 @@
 
   // set options listener
   const list = document.getElementById('option-list');
-  list.addEventListener('click', (e) => {
+  list.addEventListener('click', async (e) => {
     if (e.target.tagName.toLowerCase() === 'input') {
       const formData = new FormData(list);
       const optionElements = Array.from(document.querySelectorAll('input'));
@@ -36,7 +36,10 @@
         }
       });
 
-      chrome.storage.sync.set(settings);
+      await chrome.storage.local.set(settings);
+      // also save these in sync so new installs will have the latest settings
+      await chrome.storage.sync.clear();
+      await chrome.storage.sync.set(settings);
     }
   });
 })();

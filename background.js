@@ -68,11 +68,19 @@ async function finish(postAction) {
 
 async function getAllStoredOptions() {
   const optionIds = [...metaOptions, ...deletionOptions];
-  return chrome.storage.sync.get(optionIds);
+  const syncOptions = await chrome.storage.sync.get(optionIds);
+  const localOptions = await chrome.storage.local.get(optionIds);
+  // merge sync and local options, with local options taking precedence
+  return { ...syncOptions, ...localOptions };
+}
+
+async function getLocalStoredOptions() {
+    const optionIds = [...metaOptions, ...deletionOptions];
+    return chrome.storage.local.get(optionIds);
 }
 
 async function removeSelectedData(origin) {
-  const options = await getAllStoredOptions();
+  const options = await getLocalStoredOptions();
 
   // Do this first to prevent site from reacting to the deletion
   if (options.postAction === POST_ACTION.CLOSE_TAB) {
@@ -98,14 +106,13 @@ async function removeSelectedData(origin) {
 
 // since we read the options from storage when clearing a site, this
 // makes sure they are all present in storage
-async function syncOptions() {
-  const options = await getAllStoredOptions();
-  await chrome.storage.sync.clear(); // make sure we start with a clean slate
+async function rebuildOptions(options = {}) {
+  await chrome.storage.local.clear(); // make sure we start with a clean slate
 
   // Update option from previous version
   const postActionSetting = options.postAction ?? (options.reload === false ? POST_ACTION.DO_NOTHING : POST_ACTION.RELOAD_TAB);
 
-  chrome.storage.sync.set({
+  chrome.storage.local.set({
     postAction: postActionSetting,
     appcache: options.appcache ?? true,
     cacheStorage: options.cacheStorage ?? true,
@@ -121,12 +128,13 @@ async function syncOptions() {
 // Initialize settings when extension is installed, updated, or Chrome is updated
 // use cached values if available, otherwise use defaults
 chrome.runtime.onInstalled.addListener(() => {
-  syncOptions();
+  // check synced options upon install, in case user already has extension installed on another device
+  getAllStoredOptions().then(options => rebuildOptions(options));
 });
 
 // Fired when a profile that has this extension installed first starts up
 chrome.runtime.onStartup.addListener(() => {
-  syncOptions();
+  getLocalStoredOptions().then(options => rebuildOptions(options));
 });
 
 // toolbar button clicked
