@@ -150,6 +150,6 @@ chrome.action.onClicked.addListener(async () => {
   setTimeout(() => setRestingIcon(), 1000);
 
   const activeTab = await getCurrentTab();
-  const origin = await getOrigin(activeTab.url);
+  const origin = getOrigin(activeTab.url);
   await removeSelectedData(origin);
 });

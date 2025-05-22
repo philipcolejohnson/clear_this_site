@@ -1,4 +1,16 @@
 (async function initOptions() {
+  // Update keyboard shortcut key label based on operating system
+  function isMacOS() {
+    const userAgent = window.navigator.userAgent;
+    return userAgent.indexOf('Mac') !== -1;
+  }
+  if (isMacOS()) {
+    const keyboardShortcutElement = document.getElementById('keyboard-shortcut-key');
+    if (keyboardShortcutElement) {
+      keyboardShortcutElement.textContent = 'Option+R';
+    }
+  }
+
   const optionElements = Array.from(document.querySelectorAll('input'));
   const names = optionElements.map(o => o.name);
   const options = await chrome.storage.local.get(names);
@@ -24,12 +36,13 @@
     browserCacheOptionLabel.classList.toggle('option-disabled', isChecked);
   }
 
-  // set initial state
+  // set initial states
   setBrowserCacheDisabledState();
-  // update when the emptyCacheOption changes
-  emptyCacheOption.addEventListener('change', async (e) => {
+  
+  // update when options change
+  emptyCacheOption.addEventListener('change', async () => {
     setBrowserCacheDisabledState();
-  })
+  });
 
 
   // set options listener

@@ -8,8 +8,17 @@
   "permissions": [
     "tabs",
     "browsingData",
-    "storage"
+    "storage",
+    "commands"
   ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+R"
+      },
+      "description": "Clear data for this site"
+    }
+  },
   "background": {
     "service_worker": "background.js"
   },
