@@ -9,6 +9,7 @@ const metaOptions = [
 ];
 const deletionOptions = [
   'appcache',
+  'browserCache',
   'cacheStorage',
   'cookies',
   'fileSystems',
@@ -90,16 +91,15 @@ async function removeSelectedData(origin) {
   await chrome.browsingData.remove({
     origins: [origin]
   }, {
-    appcache: options.appcache,
+    cache: options.browserCache,
     cacheStorage: options.cacheStorage,
     cookies: options.cookies,
     fileSystems: options.fileSystems,
     indexedDB: options.indexedDB,
     localStorage: options.localStorage,
-    pluginData: true, // this is deprecated and probably can be removed
     serviceWorkers: options.serviceWorkers,
     webSQL: options.webSQL
-  })
+  });
 
   await finish(options.postAction);
 }
@@ -115,6 +115,7 @@ async function rebuildOptions(options = {}) {
   chrome.storage.local.set({
     postAction: postActionSetting,
     appcache: options.appcache ?? true,
+    browserCache: options.browserCache ?? false,
     cacheStorage: options.cacheStorage ?? true,
     cookies: options.cookies ?? true,
     fileSystems: options.fileSystems ?? true,
