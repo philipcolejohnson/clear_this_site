@@ -5,6 +5,7 @@ const POST_ACTION = Object.freeze({
 });
 
 const metaOptions = [
+  'emptyAllCache',
   'postAction',
 ];
 const deletionOptions = [
@@ -101,6 +102,10 @@ async function removeSelectedData(origin) {
     webSQL: options.webSQL
   });
 
+  if (options.emptyAllCache) {
+    await chrome.browsingData.removeCache({});
+  }
+
   await finish(options.postAction);
 }
 
@@ -114,6 +119,7 @@ async function rebuildOptions(options = {}) {
 
   chrome.storage.local.set({
     postAction: postActionSetting,
+    emptyAllCache: options.emptyAllCache ?? false,
     appcache: options.appcache ?? true,
     browserCache: options.browserCache ?? false,
     cacheStorage: options.cacheStorage ?? true,

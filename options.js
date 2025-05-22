@@ -14,6 +14,23 @@
     }
   });
 
+  const emptyCacheOption = document.getElementById('emptyAllCache');
+
+  function setBrowserCacheDisabledState() {
+    const isChecked = emptyCacheOption.checked;
+    const browserCacheOption = document.getElementById('browserCache');
+    const browserCacheOptionLabel = document.getElementById('browserCacheLabel');
+    browserCacheOption.disabled = isChecked;
+    browserCacheOptionLabel.classList.toggle('option-disabled', isChecked);
+  }
+
+  // set initial state
+  setBrowserCacheDisabledState();
+  // update when the emptyCacheOption changes
+  emptyCacheOption.addEventListener('change', async (e) => {
+    setBrowserCacheDisabledState();
+  })
+
 
   // set options listener
   const list = document.getElementById('option-list');

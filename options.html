@@ -33,6 +33,18 @@
     .heading {
       margin-top: 1rem;
     }
+
+    .radio-heading {
+      margin-bottom: 0.2rem;
+    }
+
+    .radio-option {
+      margin-left: 1rem;
+    }
+
+    .option-disabled {
+      color: #ccc;
+    }
   </style>
 </head>
 
@@ -44,15 +56,20 @@
     </div>
 
     <div class="option">
-      <p>After clearing:</p>
+      <input type="checkbox" id="emptyAllCache" name="emptyAllCache">
+      <label for="emptyAllCache">Empty full browser cache (not site-specific)</label>
+    </div>
 
-      <input type="radio" id="do-nothing" name="postAction" value="do-nothing">
+    <div class="option">
+      <div class="radio-heading">After clearing:</div>
+
+      <input type="radio" id="do-nothing" name="postAction" value="do-nothing" class="radio-option">
       <label for="do-nothing">Do nothing</label><br>
 
-      <input type="radio" id="reload-tab" name="postAction" value="reload-tab">
+      <input type="radio" id="reload-tab" name="postAction" value="reload-tab" class="radio-option">
       <label for="reload-tab">Reload tab</label><br>
 
-      <input type="radio" id="close-tab" name="postAction" value="close-tab">
+      <input type="radio" id="close-tab" name="postAction" value="close-tab" class="radio-option">
       <label for="close-tab">Close tab</label>
     </div>
 
@@ -62,7 +79,7 @@
 
     <div class="option">
       <input type="checkbox" id="serviceWorkers" name="serviceWorkers">
-      <label for="serviceWorkers">Unregister service workers</label>
+      <label for="serviceWorkers">Service workers</label>
     </div>
 
     <p class="heading"><strong>Storage</strong></p>
@@ -101,7 +118,7 @@
 
     <div class="option">
       <input type="checkbox" id="browserCache" name="browserCache">
-      <label for="browserCache">Browser cache</label>
+      <label for="browserCache" id="browserCacheLabel">Browser cache</label>
     </div>
 
     <footer class="mt-2">
