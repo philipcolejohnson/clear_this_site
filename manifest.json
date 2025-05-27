@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Clear This Site!",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "author": "Philip Cole Johnson",
   "homepage_url": "https://github.com/philipcolejohnson/clear_this_site",
   "description": "Make the current website forget you by deleting all data and cookies, without disrupting other browsing.",
