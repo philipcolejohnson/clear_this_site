@@ -6,7 +6,7 @@
   "homepage_url": "https://github.com/philipcolejohnson/clear_this_site",
   "description": "Make the current website forget you by deleting all data and cookies, without disrupting other browsing.",
   "permissions": [
-    "tabs",
+    "activeTab",
     "browsingData",
     "storage",
     "commands"
