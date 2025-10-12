@@ -11,4 +11,4 @@ A [Chrome extension](https://chrome.google.com/webstore/detail/clear-this-site/l
 1. Update version info
 2. Select files to include in the extention: `/images`, the `js` files, the `html` files, and the `manifest.json`.
 3. Archive these files into a zip file.
-4. Upload to Google developer account extension page.
+4. Upload to Google developer account extension [dashboard](https://chrome.google.com/webstore/devconsole).
