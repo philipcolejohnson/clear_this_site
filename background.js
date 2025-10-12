@@ -82,8 +82,8 @@ async function getLocalStoredOptions() {
     return chrome.storage.local.get(optionIds);
 }
 
-async function removeSelectedData(origin) {
-  const options = await getLocalStoredOptions();
+async function removeSelectedData(origin, customOptions = null) {
+  const options = customOptions || await getLocalStoredOptions();
 
   // Do this first to prevent site from reacting to the deletion
   if (options.postAction === POST_ACTION.CLOSE_TAB) {
@@ -189,6 +189,16 @@ updatePopupBehavior();
 // Handle confirmation message from the popup
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.action === 'confirmClear') {
-    await runClearAction();
+    setBusyIcon();
+    setTimeout(() => setRestingIcon(), 1000);
+    
+    // Use the custom options from the popup if provided, otherwise use stored options
+    const storedOptions = await getLocalStoredOptions();
+    const optionsToUse = {
+      ...storedOptions,
+      ...message.options // Override with popup selections
+    };
+    
+    await removeSelectedData(message.origin, optionsToUse);
   }
 });
