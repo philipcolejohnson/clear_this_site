@@ -8,7 +8,6 @@ A [Chrome extension](https://chrome.google.com/webstore/detail/clear-this-site/l
 4. Look for the little puzzle piece icon, and make sure the extension is toggled on
 
 ## distribution instructions
-
 1. Update version info
 2. Select files to include in the extention: `/images`, the `js` files, the `html` files, and the `manifest.json`.
 3. Archive these files into a zip file.

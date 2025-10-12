@@ -45,6 +45,14 @@
     .option-disabled {
       color: #ccc;
     }
+
+    .help-text {
+      color: #666;
+      font-size: 0.85rem;
+      margin-left: 1.5rem;
+      margin-top: 0.2rem;
+      line-height: 1.3;
+    }
     
     kbd {
       background-color: #eee;
@@ -70,11 +78,68 @@
 
   <form id="option-list">
 
-    <h2 class="mt-2">Options</h2>
+    <h2 class="mt-2">Site data to clear</h2>
+
+    <p class="heading"><strong>Application</strong></p>
+
+    <div class="option">
+      <input type="checkbox" id="serviceWorkers" name="serviceWorkers">
+      <label for="serviceWorkers">Service workers</label>
+      <div class="help-text">Background scripts that enable offline functionality and website push notifications.</div>
+    </div>
+
+    <p class="heading"><strong>Storage</strong></p>
+
+    <div class="option">
+      <input type="checkbox" id="localStorage" name="localStorage">
+      <label for="localStorage">Local and session storage</label>
+      <div class="help-text">Data saved by websites for settings, preferences, and temporary information. These may contain login data.</div>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="indexedDB" name="indexedDB">
+      <label for="indexedDB">IndexedDB</label>
+      <div class="help-text">Database storage for web apps to save large amounts of structured data locally.</div>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="webSQL" name="webSQL">
+      <label for="webSQL">Web SQL</label>
+      <div class="help-text">Older database storage. Most modern sites don't use this anymore.</div>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="cookies" name="cookies">
+      <label for="cookies">Cookies</label>
+      <div class="help-text">Small bits of data used to remember your login status, shopping cart, or site preferences. This does not delete third-party cookies.</div>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="fileSystems" name="fileSystems">
+      <label for="fileSystems">File systems</label>
+      <div class="help-text">Files that websites store locally, like downloaded documents or cached media.</div>
+    </div>
+
+    <p class="heading"><strong>Cache</strong></p>
+
+    <div class="option">
+      <input type="checkbox" id="cacheStorage" name="cacheStorage">
+      <label for="cacheStorage">Cache storage</label>
+      <div class="help-text">Resources saved by a site for offline use, like pages, images, and scripts.</div>
+    </div>
+
+    <div class="option">
+      <input type="checkbox" id="browserCache" name="browserCache">
+      <label for="browserCache" id="browserCacheLabel">Browser cache</label>
+      <div class="help-text">Cached files (images, scripts, stylesheets) saved on your computer by your browser to speed up page loading.</div>
+    </div>
+
+    <h2 class="mt-2">Additional options</h2>
 
     <div class="option">
       <input type="checkbox" id="emptyAllCache" name="emptyAllCache">
-      <label for="emptyAllCache">Empty full browser cache (not site-specific)</label>
+      <label for="emptyAllCache">Empty full browser cache, instead of just the current site's cache</label>
+      <div class="help-text">Clears the browser's cached files for all websites. This does not affect application or storage data for other sites.</div>
     </div>
 
     <div class="option">
@@ -89,54 +154,6 @@
       <input type="radio" id="close-tab" name="postAction" value="close-tab" class="radio-option">
       <label for="close-tab">Close tab</label>
     </div>
-
-    <h2 class="mt-2">Site data to clear</h2>
-
-    <p class="heading"><strong>Application</strong></p>
-
-    <div class="option">
-      <input type="checkbox" id="serviceWorkers" name="serviceWorkers">
-      <label for="serviceWorkers">Service workers</label>
-    </div>
-
-    <p class="heading"><strong>Storage</strong></p>
-
-    <div class="option">
-      <input type="checkbox" id="localStorage" name="localStorage">
-      <label for="localStorage">Local and session storage</label>
-    </div>
-
-    <div class="option">
-      <input type="checkbox" id="indexedDB" name="indexedDB">
-      <label for="indexedDB">IndexedDB</label>
-    </div>
-
-    <div class="option">
-      <input type="checkbox" id="webSQL" name="webSQL">
-      <label for="webSQL">Web SQL</label>
-    </div>
-
-    <div class="option">
-      <input type="checkbox" id="cookies" name="cookies">
-      <label for="cookies">Cookies</label>
-    </div>
-
-    <div class="option">
-      <input type="checkbox" id="fileSystems" name="fileSystems">
-      <label for="fileSystems">File systems</label>
-    </div>
-
-    <p class="heading"><strong>Cache</strong></p>
-
-    <div class="option">
-      <input type="checkbox" id="cacheStorage" name="cacheStorage">
-      <label for="cacheStorage">Cache storage</label>
-    </div>
-
-    <div class="option">
-      <input type="checkbox" id="browserCache" name="browserCache">
-      <label for="browserCache" id="browserCacheLabel">Browser cache</label>
-    </div>
   </form>
 
   <h2 class="mt-2">Keyboard shortcut</h2>
@@ -144,7 +161,7 @@
   <p>
     <kbd id="keyboard-shortcut-key">Alt+R</kbd>
   </p>
-  <div class="small">Note: To disable shortcut, go to Extensions -> Keyboard shortcuts (chrome://extensions/shortcuts)</div>
+  <div class="small">Note: To disable shortcut, go to Manage Extensions -> Keyboard shortcuts (or chrome://extensions/shortcuts)</div>
 
   <footer class="mt-2">
     <p class="small">Clear This Site! (c) 2025 Philip Johnson. <a href="https://github.com/philipcolejohnson/clear_this_site">Source code</a></p>
