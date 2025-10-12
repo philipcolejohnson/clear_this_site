@@ -7,6 +7,7 @@ const POST_ACTION = Object.freeze({
 const metaOptions = [
   'emptyAllCache',
   'postAction',
+  'showConfirmation',
 ];
 const deletionOptions = [
   'appcache',
@@ -114,12 +115,13 @@ async function removeSelectedData(origin) {
 async function rebuildOptions(options = {}) {
   await chrome.storage.local.clear(); // make sure we start with a clean slate
 
-  // Update option from previous version
+  // Update option from legacy extension options
   const postActionSetting = options.postAction ?? (options.reload === false ? POST_ACTION.DO_NOTHING : POST_ACTION.RELOAD_TAB);
 
   chrome.storage.local.set({
     postAction: postActionSetting,
     emptyAllCache: options.emptyAllCache ?? false,
+    showConfirmation: options.showConfirmation ?? false,
     appcache: options.appcache ?? true,
     browserCache: options.browserCache ?? false,
     cacheStorage: options.cacheStorage ?? true,
@@ -130,6 +132,15 @@ async function rebuildOptions(options = {}) {
     serviceWorkers: options.serviceWorkers ?? true,
     webSQL: options.webSQL ?? true,
   });
+}
+
+async function runClearAction() {
+  setBusyIcon();
+  setTimeout(() => setRestingIcon(), 1000);
+
+  const activeTab = await getCurrentTab();
+  const origin = getOrigin(activeTab.url);
+  await removeSelectedData(origin);
 }
 
 // Initialize settings when extension is installed, updated, or Chrome is updated
@@ -144,12 +155,40 @@ chrome.runtime.onStartup.addListener(() => {
   getLocalStoredOptions().then(options => rebuildOptions(options));
 });
 
-// toolbar button clicked
+// This handler will only be called if no popup is set
+// and extension button is clicked
 chrome.action.onClicked.addListener(async () => {
-  setBusyIcon();
-  setTimeout(() => setRestingIcon(), 1000);
+  // the confirmation is disabled, proceed directly
+  await runClearAction();
+});
 
-  const activeTab = await getCurrentTab();
-  const origin = getOrigin(activeTab.url);
-  await removeSelectedData(origin);
+// Check before each potential click whether to show popup or handle directly
+// We do this by updating the popup setting dynamically
+async function updatePopupBehavior() {
+  const options = await getLocalStoredOptions();
+  
+  if (options.showConfirmation) {
+    // Enable the popup
+    await chrome.action.setPopup({ popup: 'confirm.html' });
+  } else {
+    // Disable the popup so onClicked fires instead
+    await chrome.action.setPopup({ popup: '' });
+  }
+}
+
+// Update popup behavior when storage changes
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (changes.showConfirmation) {
+    updatePopupBehavior();
+  }
+});
+
+// Initialize popup behavior on startup
+updatePopupBehavior();
+
+// Handle confirmation message from the popup
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+  if (message.action === 'confirmClear') {
+    await runClearAction();
+  }
 });

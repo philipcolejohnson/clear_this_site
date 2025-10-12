@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #303942;
+      margin: 0;
+    }
+
+    .logo {
+      height: 2rem;
+      margin-right: 0.5rem;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .message {
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .site-name {
+      font-weight: bold;
+      color: #d73a49;
+      word-break: break-word;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .cancel-btn {
+      background-color: #e1e4e8;
+      color: #24292e;
+    }
+
+    .cancel-btn:hover {
+      background-color: #d1d5da;
+    }
+
+    .confirm-btn {
+      background-color: #d73a49;
+      color: white;
+    }
+
+    .confirm-btn:hover {
+      background-color: #cb2431;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <img class="logo" alt="Clear This Site! logo" src="/images/inactive-128.png">
+    <h2 style="margin: 0;">Clear This Site?</h2>
+  </div>
+  
+  <div class="message">
+    Are you sure you want to clear all data for <span class="site-name" id="site-name"></span>?
+  </div>
+
+  <div class="buttons">
+    <button class="cancel-btn" id="cancel-btn">Cancel</button>
+    <button class="confirm-btn" id="confirm-btn">Clear Data</button>
+  </div>
+
+  <script src="confirm.js"></script>
+</body>
+
+</html>
